@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<include file="public:headtop" />
+</head>
+
+
+    <body id="touch">
+  
+<include file="public:head" />
+<div id="content">
+
+        <div class="public">
+        
+            <notempty name="item_orders">
+             <volist name='item_orders' id='vo' >
+            <div class="order_form">
+                    <p class="num">订单号: {$vo.orderId}</p>
+                    <volist name='vo.items' id='item' >
+                    <div class="con">
+                        <p class="ware_pic"><a href="{:U('item/index',array('id'=>$item['itemId']))}" ><img src="{:attach(get_thumb($item['img'], '_b'), $_SESSION['user_token'].'/item')}" height="80" width="80"></a></p>
+                        <p class="ware_text"><a href="{:U('item/index',array('id'=>$item['itemId']))}">{$item.title} {$item.spec_1} {$item.spec_2}</a><br><span class="attr"></span></p>
+                        <p class="price">价格: <span>¥{$item.price}</span></p>
+                        <p class="amount">数量: <span>{$item.quantity}<br></span></p>
+						<p class="ware_text"><span>
+						<switch name="vo.status" >
+						 <case value="4"><!-- 待收货 -->
+						 
+						 
+						  <if condition='$item.comment_flag eq 0' >
+						  <a href="{:U('order/comment',array('itemid'=>$item['itemId'],'status'=>$status))}" >商品评价</a>
+                    </if>	
+							
+							
+                         </case>
+                        <default />
+                                      
+                        </switch> 
+						</span></p>
+						<p class="price"><span>
+                    </div>
+                  </volist>
+                    <div class="clear"></div>
+                    <div class="foot">
+                        <p class="time">添加时间:{$vo.add_time|date='Y-m-d H:i:s',###}</p>
+                         <div class="handle">
+                            <div style="float:left;">
+                                订单总价: <b id="order118_order_amount">¥{$vo.order_sumPrice}&nbsp;&nbsp;</b>
+                            </div>   
+                         <switch name="vo.status" >
+                         <case value="1"><!--待付款 -->
+                           <a href="{:U('order/pay',array('orderId'=>$vo['orderId']))}" id="order118_action_pay" class="btn">付款</a>
+                          
+                            <a href="{:U('order/cancelOrder',array('orderId'=>$vo['orderId']))}" id="order118_action_cancel" style="font-size: 12px;"> 取消订单</a>
+                            <a href="{:U('order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status))}"  style="font-size: 12px;margin-left: 12px; ">查看订单</a>
+                         </case>
+                         <case value="2"><!--待发货 -->
+							<a href="{:U('order/cancelOrder',array('orderId'=>$vo['orderId']))}" id="order118_action_cancel" style="font-size: 12px;"> 取消订单</a>
+                            <a href="{:U('order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status))}" style="font-size: 12px;margin-left: 12px;">查看订单</a>
+                         </case>
+                         <case value="3"><!-- 待收货 -->
+                            <a href="{:U('order/confirmOrder',array('orderId'=>$vo['orderId'],'status'=>$status))}" id="order118_action_confirm" style="font-size: 12px;" >确认收货</a>
+                            <a href="{:U('order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status))}" style="font-size: 12px;margin-left: 12px;" >查看订单</a>
+                         </case>
+			
+                        <default />
+                         <a href="{:U('order/checkOrder',array('orderId'=>$vo['orderId'],'status'=>$status))}" style="font-size: 10px;">查看订单</a>
+                
+                        </switch>                     
+                        </div>
+                    </div>
+            </div>
+            </volist>
+            <else/>
+           <div class="order_form member_no_records">
+                <span>没有符合条件的记录</span>
+            </div>
+              </notempty>
+        
+            
+            
+          
+
+            </div>
+
+<include file="public:footer" />
+</body>
+</html>

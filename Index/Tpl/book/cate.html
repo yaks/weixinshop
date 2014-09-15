@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://store.weiapps.cn/index.php -->
+<html>
+    <include file="public:headtop" />
+        <!--组件依赖css begin-->
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/cate/cate.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/loading.default.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/refresh/refresh.default.css" />    <!--皮肤文件，若不使用该皮肤，可以不加载-->
+    <!--组件依赖css end-->
+    <!--组件依赖js begin-->
+	<script type="text/javascript" src="__STATIC__/GMU/src/widget/slider/$lazyloadimg.js"></script>
+    <script type="text/javascript" src="__STATIC__/GMU/src/widget/refresh/refresh.js"></script>
+    <script type="text/javascript" src="__STATIC__/GMU/src/widget/refresh/$lite.js"></script>   <!--向上拉动插件-->
+    <!--组件依赖js end-->
+    <head>
+    </head>
+    
+    <body>
+        <include file="public:head" />
+<div id="content">
+    <div class="ui-refresh">
+      <div class="mod_itemgrid data-list" id="itemCont">
+
+
+
+
+</div>
+	
+    <div class="ui-refresh-down"></div> 
+	</div>
+    <!--setup方式带有class为ui-refresh-down或ui-refresh-up的元素必须加上，用于放refresh按钮-->
+	<script id="item_list" type="text/html">
+	<%each data as sub index%>
+<div class="hproduct">
+    <a href="./index.php?m=item&a=index&id=<%sub.id%>&token=<%sub.token%>">
+        <p class="cover">
+            <img src="./data/upload/<%sub.token%>/item/<%sub.img%>">
+        </p>
+        <p class="fn">
+		    <%if sub.rexiao!='0'%>
+            <span class="dis"><%sub.rexiao%>
+            </span>
+			<%else%>
+			            <span class="dis" style= "display:none;"><%sub.xinping%>
+            </span>
+			<%/if%>
+			<%if sub.xinping!='0'%>
+            <span class="dis"><%sub.xinping%>
+            </span>
+			<%else%>
+			            <span class="dis" style= "display:none;"><%sub.xinping%>
+            </span>
+			<%/if%>
+            <span class="title"><%sub.title%></span>
+        </p>
+        <p class="prices">
+			<%if sub.dis_flag=='1'%>
+            <strong>
+                <em>
+                    ￥<%sub.price | dateFormat:{$discount}%>
+                </em>
+            </strong>
+			<%if 10=={$discount}%>
+            <del>
+                ￥<%sub.markprice%>
+            </del>
+			
+            <span class="discount">
+                <%sub.sale%>折
+            </span>
+			<%else%>
+			<del>
+                ￥<%sub.price%>
+            </del>
+			
+            <span class="discount">
+                {$discount}折
+            </span>
+			<%/if%>
+			<%else%>
+			  <strong>
+                <em>
+                    ￥<%sub.price%>
+                </em>
+            </strong>
+			<del>
+                ￥<%sub.markprice%>
+            </del>
+			
+            <span class="discount">
+                <%sub.sale%>折
+            </span>
+			
+			<%/if%>
+			
+			
+        </p>
+    </a>
+</div>
+<%/each%>
+	</script>
+		<script type="text/javascript">
+	var page =1;
+	var item_list={$json_goods};
+	function cutString(str, len) {
+	if(str.length*2 <= len) {
+		return str;
+	}
+	var strlen = 0;
+	var s = "";
+	for(var i = 0;i < str.length; i++) {
+		s = s + str.charAt(i);
+		if (str.charCodeAt(i) > 128) {
+			strlen = strlen + 2;
+			if(strlen >= len){
+				return s.substring(0,s.length-1) + "...";
+			}
+		} else {
+			strlen = strlen + 1;
+			if(strlen >= len){
+				return s.substring(0,s.length-2) + "...";
+			}
+		}
+	}
+	return s;
+};
+function isInteger(obj) {
+
+    return obj%1 === 0
+
+}
+template.helper('dateFormat', function (date, format) {
+	if(format==10)
+		return date;
+	
+	if(format<10){
+	var price =format*date/10;
+	  if(isInteger(price)){
+	  return price+'.00';
+	  }else{
+	  return price.toFixed(1)+'0'; 
+	  } 
+	 }
+
+
+});	
+    (function () {
+
+
+template.config('openTag','<%');
+template.config('closeTag','%>');
+
+var html = template('item_list', item_list);
+document.getElementById('itemCont').innerHTML = html;
+		
+        /*组件初始化js begin*/
+        $('.ui-refresh').refresh({
+            load: function (dir, type) {
+                var me = this;
+				
+				
+                $.get('./index.php?m=book&a=get_items_ajax&cateid={$cate_id}&page='+page, function (data) {
+					page+=1;
+					console.log(data.status);
+					if (data.status==0){
+					
+                    var $list = $('.data-list'),
+                            html = (function (data) {      //数据渲染
+                                var html_ajax = template('item_list', data);
+                                return html_ajax;
+                            })(data);
+
+                    $list[dir == 'up' ? 'prepend' : 'append'](html);
+                    me.afterDataLoading();
+					}else{
+					me.afterDataLoading();
+					me.disable();
+					}
+					//数据加载完成后改变状态
+			
+
+			
+			
+						 $(".fn").each(function() {
+					var maxh =document.body.scrollWidth
+					var len = 36;
+					if ( maxh < 350 )
+					{ 
+						len =24;
+					}
+                 inText = $(this).find('.dis')
+				 text1=inText.text()
+				 text2=inText.next().text()
+				
+	
+				 if ( (text1.length+text2.length) <29){
+				 
+				   len=len-5;
+				   }
+				if ( (text1.length+text2.length) >29){
+				 
+				  len=len-10;
+				   }
+				   var inText = $(this).find('.title')
+				   var text3 =inText.text();
+				   inText.text(cutString(text3,len));
+				   
+				   
+				   
+				 				
+				
+          	
+            });
+			
+			
+			
+                });
+            }
+        });
+        /*组件初始化js end*/
+		
+		
+		
+    })();
+</script>
+
+
+
+        <include file="public:footer" />
+    </body>
+
+</html>
+
+<script type="text/javascript">
+
+    (function () {
+	
+	
+
+			
+			 $(".fn").each(function() {
+					var maxh =document.body.scrollWidth
+					var len = 36;
+					if ( maxh < 350 )
+					{ 
+						len =24;
+					}
+                 inText = $(this).find('.dis')
+				 text1=inText.text()
+				 text2=inText.next().text()
+				
+	
+				 if ( (text1.length+text2.length) <29){
+				 
+				   len=len-5;
+				   }
+				if ( (text1.length+text2.length) >29){
+				 
+				  len=len-10;
+				   }
+				   var inText = $(this).find('.title')
+				   var text3 =inText.text();
+				   inText.text(cutString(text3,len));
+				   
+				   
+				 				
+				
+          	
+            });
+
+
+    })();
+
+</script>
+
+

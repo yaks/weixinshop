@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://store.weiapps.cn/index.php -->
+<html>
+<head>
+<include file="public:headtop" />
+
+<link type="text/css" rel="stylesheet" href="__STATIC__/weixin/css/good-news.css">	
+</head>
+
+<body id="body">
+<include file="public:head" />
+<div class="new-ct" >
+	<div class="new-search new-goods-lst">
+	
+	<div class="new-goods-img-lst">
+	
+		  <volist name="tuijian" id="item">
+		<div class="new-big-img new-mg-t15">
+            	<a href="{:U('item/index',array('id'=>$item['id']))}" class="new-goods-section2 new-p-re">
+                	<img src="{:attach(get_thumb($item['img'], '_b'), 'item')}" width="300" height="300" alt="img" class="new-goods-img">
+                    <span class="new-goods-txt2">
+                    	<strong>&yen;{$item.price}</strong>
+                        <span>{$item.title}</span>
+                    </span>
+						<span <span style="position: absolute;  right: 0;  top: 0;">
+             	<img src="__STATIC__/weixin/images/goods-hot.png" width="80" height="80" alt="img" class="new-goods-img">
+                    </span>
+                </a>
+         </div>		 
+		     </volist>		           
+                      
+			          
+	</div>
+	</div>
+</div>
+<include file="public:footer" />
+</body>
+</html>

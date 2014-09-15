@@ -1,0 +1,32 @@
+<include file="public:header" />
+<!--ю╦д©ап╠М-->
+<div class="pad_lr_10">
+    <div class="J_tablelist table_list" data-acturi="{:U('item_cate/ajax_edit')}">
+    <table width="100%" cellspacing="0" id="J_cate_tree">
+        <thead>
+            <tr>
+                <th width="30" style="display:none;"><input type="checkbox" name="checkall" class="J_checkall"></th>
+                <th width="30" style="display:none;" ><span data-tdtype="order_by" data-field="id">ID</span></th>
+                <th align="left" width="100">{:L('item_cate_name')}</th>
+                <th align="left" width="500"><span>URL</span></th>
+
+            </tr>
+        </thead>
+    	<tbody>
+        {$list}
+    	</tbody>
+    </table>
+    </div>
+  
+</div>
+<include file="public:footer" />
+<script src="__STATIC__/js/jquery/plugins/jquery.treetable.js"></script>
+<script>
+$(function(){
+    //initialState:'expanded'
+    $("#J_cate_tree").treeTable({indent:20,treeColumn:2});
+    $(".J_preview").preview();
+});        
+</script> 
+</body>
+</html>

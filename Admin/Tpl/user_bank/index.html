@@ -1,0 +1,45 @@
+<include file="public:header" />
+<!--标签-->
+<div class="pad_lr_10" >
+    <div class="J_tablelist table_list" data-acturi="{:U('user_bank/ajax_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="40"><input type="checkbox" name="checkall" class="J_checkall"></th>
+				<!--<th width="50"><span tdtype="order_by" fieldname="id">ID</span></th>-->
+                <th align="left"><span data-tdtype="order_by" data-field="bank_name">银行名称</span></th>
+				<th align="left"><span data-tdtype="order_by" data-field="bank_num">很行账户</span></th>
+				<th align="left"><span data-tdtype="order_by" data-field="bank_user">很行账名</span></th>
+				<th align="left"><span data-tdtype="order_by" data-field="bank_desc">描述</span></th>
+                <th width="120">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val">
+            <tr>
+                <td align="center"><input type="checkbox" class="J_checkitem" value="{$val.id}"></td>
+				<!--<td align="center">{$val.id}</td>-->
+                <td align="left"><span>{$val.bank_name}</span></td>
+                <td align="left"><span>{$val.bank_num}</span></td>
+				<td align="left"><span>{$val.bank_user}</span></td>
+				<td align="left"><span>{$val.bank_desc}</span></td>
+                <td align="center">
+                	<a href="javascript:;" class="J_showdialog" data-uri="{:U('user_bank/edit', array('id'=>$val['id']))}" data-title="{:L('edit')} - {$val.bank_name}"  data-id="edit" data-acttype="ajax" data-width="400" data-height="130">{:L('edit')}</a> | 
+                    <a href="javascript:;" class="J_confirmurl" data-acttype="ajax" data-uri="{:U('user_bank/deletebrand', array('id'=>$val['id']))}" data-msg="{:sprintf(L('confirm_delete_one'),$val['bank_name'])}">{:L('delete')}</a>
+                </td>
+            </tr>
+            </volist>
+    	</tbody>
+    </table>
+    </div>
+
+    <div class="btn_wrap_fixed">
+    	<label><input type="checkbox" name="checkall" class="J_checkall">{:L('select_all')}/{:L('cancel')}</label>
+    	<input type="button" class="btn" data-tdtype="batch_action" data-acttype="ajax" data-uri="{:U('user_bank/deletebrand')}" data-name="id" data-msg="{:L('confirm_delete')}" value="{:L('delete')}" />
+    	<div id="pages">{$page}</div>
+    </div>
+
+</div>
+<include file="public:footer" />
+</body>
+</html>

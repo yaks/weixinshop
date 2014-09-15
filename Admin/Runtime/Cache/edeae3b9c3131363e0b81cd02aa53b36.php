@@ -1,0 +1,14 @@
+<?php if (!defined('THINK_PATH')) exit();?>
+<div class="dialog_content" style ="width:400px">
+	<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+		<tr>
+			<th width="120">URL :</th>
+			<td><textarea rows="2" cols="50"><?php echo ($item_url); ?></textarea></td>
+		</tr>
+        <tr>
+			<th width="120">二维码 :</th>
+			<td><img  id="imgWxQRCode" src="<?php echo ($QR_Logo); ?>" style="width: 90%;"></td>
+		</tr>
+		</tr>
+	</table>
+</div>

@@ -1,0 +1,45 @@
+
+
+<div class="dialog_content">
+<div class="J_tablelist_spec table_list" data-acturi="{:U('item/spec_edit')}">
+    <table width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th style="display:none;"><span data-field="spec_id">ID</span></th>
+                <th align="center"><span data-field="spec_1">{$item.spec_name_1}</span></th>
+				<th align="center"><span data-field="spec_2">{$item.spec_name_2}</span></th>
+				<th width="60" align="center"><span data-field="price">商场价格</span></th>
+				<th width="60" align="center"><span data-field="markprice">市场价格</span></th>
+				<th width="40" align="center"><span data-field="sku">编号</span></th>
+				<th width="40" align="center"><span data-field="stock">库存</span></th>
+				<th align="center"><span data-field="buy_num">销量</span></th>
+                <th  style="display:none;" width="80">{:L('operations_manage')}</th>
+            </tr>
+        </thead>
+    	<tbody>
+            <volist name="list" id="val" >
+            <tr>
+                <td  style="display:none;" align="center">{$val.spec_id}</td>
+                <td align="center"><span data-field="spec_1" data-id="{$val.spec_id}" >{$val.spec_1}</span></td>
+                <td align="center"><span data-field="spec_2" data-id="{$val.spec_id}" >{$val.spec_2}</span></td>
+				<td align="center"><span data-tdtype="edit" data-field="price" data-id="{$val.spec_id}" class="tdedit">{$val.price}</span></td>
+				<td align="center"><span data-tdtype="edit" data-field="markprice" data-id="{$val.spec_id}" class="tdedit">{$val.markprice}</span></td>
+				<td align="center"><span data-tdtype="edit" data-field="sku" data-id="{$val.spec_id}" class="tdedit">{$val.sku}</span></td>
+				<td align="center"><span data-tdtype="edit" data-field="stock" data-id="{$val.spec_id}" class="tdedit">{$val.stock}</span></td>
+				<td align="center"><span data-field="buy_num" data-id="{$val.spec_id}" >{$val.buy_num}</span></td>
+
+                <td  style="display:none;" align="center">
+                <a href="javascript:void(0);" class="J_confirmurl" data-uri="{:u('user/delete', array('id'=>$val['spec_id']))}" data-acttype="ajax" data-msg="{:sprintf(L('confirm_delete_one'),$val['spec_id'])}">{:L('delete')}</a></td>
+            </tr>
+            </volist>
+    	</tbody>
+    </table>
+</div>
+</div>
+<script src="__STATIC__/js/jquery/plugins/listTable.js"></script>
+<script>
+$(function(){
+	$('.J_tablelist_spec').listTable();
+});
+</script>
+

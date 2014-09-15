@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<include file="public:headtop" />
+
+<script type="text/javascript" src="__STATIC__/GMU/src/extend/highlight.js"></script>
+<script type="text/javascript" src="__STATIC__/GMU/src/extend/parseTpl.js"></script>
+<script type="text/javascript" src="__STATIC__/GMU/src/widget/dialog/dialog.js"></script>
+<script type="text/javascript" src="__STATIC__/GMU/src/widget/dialog/$position.js"></script>
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/dialog/dialog.css" />
+<link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/dialog/dialog.default.css" /> 
+<link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/dialog/dialog_demo.css" />
+
+</head>
+
+
+    <body id="touch">
+  
+<include file="public:head" />
+  
+<script type="text/javascript">
+$(function ($){	
+
+	  var dialog4 = gmu.Dialog({
+        width: 200,
+        autoOpen: true,
+        closeBtn: false,
+		title:'登陆提示',
+        buttons: {
+            '取消': function(){
+                this.close();
+            }
+        },
+        content: '<ul class="share-list"><a class="r" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri=http://shop.bismai.com/index.php/weixin/?a=author&response_type=code&scope=snsapi_base&state=1#wechat_redirect&baaaaa=aaaa"><li class="sms">使用微信登陆</li></a></ul>'
+    });
+
+
+});
+</script>
+
+<div id="content">
+    <form method="post" id="login_form">
+            <input name="user_name" id="user_name" class="text width5" placeholder="用户名" type="text">
+            <label></label>
+            <input name="password" id="password" class="text width5" placeholder="密 码" type="password">
+            <label></label>                              
+            <label id="login_text"></label>
+            <input name="Submit" value="登陆" class="enter" type="submit">
+            <a href="#" class="clew" style="display:none;">忘记密码？</a>
+           <!-- <input name="ret_url" value=" " type="hidden">-->
+    </form>
+    <div class="login_right">
+        <h4>如果您还不是会员，请<a href="{:U('user/register')}" title="立即注册">立即注册</a></h4>
+		<input type="radio" name="iCheck">
+<input type="radio" name="iCheck" checked>
+    </div>
+
+
+
+
+<include file="public:footer" />
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://store.weiapps.cn/index.php -->
+<html>
+    <include file="public:headtop" />
+    <head></head>
+    <body id="touch">
+        <include file="public:head" />
+		<script type="text/javascript" src="__STATIC__/GMU/src/widget/slider/$lazyloadimg.js"></script>
+        <div id="content">
+		<div id="slider"></div>
+		<script id="slider_pic" type="text/html">
+			<%each data as sub i%>
+				<div>
+					<a href="<%sub.url%>"><img src="./data/upload/<%sub.token%>/advert/<%sub.content%>" width="100%" height="100%"></a>
+					<p><%sub.desc%></p>
+				</div>
+			<%/each%>
+		</script>
+	<script id="good_index" type="text/html">
+			<%each data as sub index%>
+				<%if index%2==0%>
+					<div class="pxui-area styles" id="pxuiarea">
+					<a href="./index.php?m=book&a=cate&cateid=<%sub.id%>">
+					<h2 style="background-color: #ffaf51;font-size: 16 "><%sub.name%></h2>
+					</a>
+					<a class="max" style=" margin-right: 2px; " ><img src="./data/upload/<%sub.token%>/item_cate/<%sub.img%>" width="120" height="140"></a>
+					<div style="float: none;">
+                    <p style=" margin-right: 0px; ">
+					<%each sub.sub_cate as sub_1 index%>
+					   <%if index<7%>
+                        <a href="./index.php?m=book&a=cate&cateid=<%sub_1.id%>" style="margin-right:3px;background-color: #ffaf51; color:#FFFFFF;border: 1px solid #ffaf51; ">
+                            <%sub_1.name%>
+                        </a>
+						<%/if%>
+						<%if index==7%>
+							<a  class="more" href="./index.php?m=book&a=cate_list&cateid=<%sub.id%>" >
+                            更多
+                            <del>
+                                <i class="arrow-right">
+                                </i>
+                            </del>
+                        </a>
+						<%/if%>
+						<%/each%>
+                      
+                    </p>
+                </div>
+            </div>
+			<%else%>
+			           <div class="pxui-area styles">
+                <div>
+                    <p style=" margin-right: 184px; ">
+					<%each sub.sub_cate as sub_1 index%>
+						<%if index<7%>
+                        <a href="./index.php?m=book&a=cate&cateid=<%sub_1.id%>" style="margin-left:3px;margin-right:0px;background-color: #ff8080; color:#FFFFFF;border: 1px solid #ff8080; ">
+                            <%sub_1.name%>
+                        </a>
+						<%/if%>
+						<%if index==7%>
+						  <a  class="more" href="./index.php?m=book&a=cate_list&cateid=<%sub.id%>">
+                            更多
+                            <del>
+                                <i class="arrow-right">
+                                </i>
+                            </del>
+                        </a>
+						<%/if%>
+					<%/each%>
+                       
+                      
+                    </p>
+                </div>
+                <a class="max" style=" position: absolute; right: 30px; " >
+                    <img src="./data/upload/<%sub.token%>/item_cate/<%sub.img%>"
+                    width="120" height="140">
+                </a>
+				<a href="./index.php?m=book&a=cate&cateid=<%sub.id%>">
+                <h2 style="background-color: #ff8080; float:right;font-size:16px">
+      
+                        <%sub.name%>
+           
+                </h2>
+				</a>
+            </div>
+			<%/if%>
+    <%/each%>
+</script>
+
+<script>
+$(function ($) {
+	ad_data={$json_ads};  
+	cate_data={$json_cate}; 	
+	template.config('openTag','<%');
+	template.config('closeTag','%>');
+	document.getElementById('slider').innerHTML = template('slider_pic', ad_data);
+	document.getElementById('index').innerHTML = template('good_index', cate_data);
+	$('#slider').slider({imgZoom: true });
+});
+</script>
+
+
+<div id="index"></div>
+        <include file="public:footer" />
+    </body>
+</html>

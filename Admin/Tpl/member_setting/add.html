@@ -1,0 +1,92 @@
+<!--添加禁止IP-->
+<div class="dialog_content">
+	<form id="info_form" name="info_form" action="{:u('member_setting/add')}" method="post">
+	<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+		<tr>
+			<th width="80">会员等级 :</th>
+			<td><input type="text" name="level_name" id="level_name" class="input-text"></td>
+		</tr>
+		<tr>
+			<th width="80">最小积分 :</th>
+			<td><input type="text" name="min_num" id="min_num" class="input-text"></td>
+		</tr>
+		<tr>
+			<th width="80">最大积分 :</th>
+			<td><input type="text" name="max_num" id="max_num" class="input-text"></td>
+		</tr>
+		<tr>
+			<th width="80">折扣率(%) :</th>
+			<td><input type="text" name="discount" id="discount" class="input-text"></td>
+		</tr>
+
+	</table>
+	</form>
+</div>
+<script>
+var check_name_url = "{:U('member_setting/ajax_check_name')}";
+var check_num_url = "{:U('member_setting/ajax_check_num')}";
+var check_num_url2 = "{:U('member_setting/ajax_check_num1')}";
+$(function(){
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	$("#min_num").formValidator({onshow:'最小积分',onfocus:'最小积分'}).regexValidator({regexp:"intege1", datatype:"enum", onerror: "整数格式不正确"});
+	$("#max_num").formValidator({onshow:'最大积分',onfocus:'最大积分'}).regexValidator({regexp:"intege1",datatype:"enum",onerror:'积分为整数'});
+	$("#max_num").formValidator({onshow:'最大积分',onfocus:'最大积分'}).compareValidator({desid:"min_num",operateor:">",datatype:"number",onerror:'最小积分必须小于最大积分'}).ajaxValidator({
+	    type : "get",
+		url : check_num_url2,
+		datatype : "json",
+		async:'false',
+		success : function(result){	
+            if(result.status == 0){
+                return false;
+			}else{
+                return true;
+			}
+		},
+		onerror : '此最大积分已经在其它积分段中',
+		onwait : lang.connecting_please_wait
+	});
+	$("#discount").formValidator({onshow:'折扣率',onfocus:'折扣率'}).regexValidator({regexp:"intege1",datatype:"enum",onerror:'折扣率为整数,不需要加(%)'});
+	$("#discount").formValidator({onshow:lang.please_input+'折扣率',onfocus:lang.please_input+'折扣率'}).inputValidator({min:1,max:100,type:"value",onerror:'折扣率1-100'})
+	$("#level_name").formValidator({onshow:lang.please_input+'等级名称',onfocus:lang.please_input+'等级名称'}).inputValidator({min:1,onerror:lang.please_input+'等级名称'}).ajaxValidator({
+	    type : "get",
+		url : check_name_url,
+		datatype : "json",
+		async:'false',
+		success : function(result){	
+            if(result.status == 0){
+                return false;
+			}else{
+                return true;
+			}
+		},
+		onerror : '名称已存在',
+		onwait : lang.connecting_please_wait
+	});
+	$("#min_num").formValidator({onshow:'最小积分',onfocus:'最小积分'}).regexValidator({regexp:"intege1", datatype:"enum", onerror: "整数格式不正确"}).ajaxValidator({
+	    type : "get",
+		url : check_num_url,
+		datatype : "json",
+		async:'false',
+		success : function(result){	
+            if(result.status == 0){
+                return false;
+			}else{
+                return true;
+			}
+		},
+		onerror : '此最小积分已经在其它积分段中',
+		onwait : lang.connecting_please_wait
+	});
+	
+	$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		if(result.status == 1){
+			$.dialog.get(result.dialog).close();
+			$.pinphp.tip({content:result.msg});
+			window.location.reload();
+		} else {
+			$.pinphp.tip({content:result.msg, icon:'alert'});
+		}
+	}
+});
+</script>

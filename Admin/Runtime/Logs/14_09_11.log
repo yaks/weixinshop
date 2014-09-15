@@ -1,0 +1,23 @@
+[ 2014-09-11T17:56:50+08:00 ] 183.12.47.114 /admin.php?m=item_cate&a=ajax_getchilds&type=0&id=0
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.000529s ]
+INFO: [ route_check ] --END-- [ RunTime:0.000607s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000354s ]
+NOTIC: [8192] mysql_connect(): The mysql extension is deprecated and will be removed in the future: use mysqli or PDO instead /webapps/weixinshop5/ThinkPHP/Lib/Driver/Db/DbMysql.class.php 第 55 行.
+SQL: SHOW COLUMNS FROM `weixin_ipban` [ RunTime:0.000538s ]
+SQL: DELETE FROM `weixin_ipban` WHERE ( expires_time <> 0 AND expires_time < 1410429410 ) [ RunTime:0.000236s ]
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead /webapps/weixinshop5/ThinkPHP/Lib/Core/Db.class.php 第 604 行.
+SQL: SELECT COUNT(*) AS tp_count FROM `weixin_ipban` WHERE ( `type` = 'ip' ) AND ( `name` = '183.12.47.114' ) LIMIT 1   [ RunTime:0.000317s ]
+INFO: check_ipban Behavior ::run [ RunTime:0.007962s ]
+NOTIC: [8] Use of undefined constant GROUP_NAME - assumed 'GROUP_NAME' /webapps/weixinshop5/Admin/Lib/Behavior/load_langBehavior.class.php 第 26 行.
+INFO: load_lang Behavior ::run [ RunTime:0.001227s ]
+INFO: CheckLang Behavior ::run [ RunTime:0.000267s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.009934s ]
+NOTIC: 建议使用I方法替代_request
+SQL: SHOW COLUMNS FROM `weixin_item_cate` [ RunTime:0.000712s ]
+NOTIC: 建议使用I方法替代_get
+NOTIC: 建议使用I方法替代_get
+NOTIC: [8192] preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead /webapps/weixinshop5/ThinkPHP/Lib/Core/Db.class.php 第 604 行.
+SQL: SELECT `id`,`name` FROM `weixin_item_cate` WHERE ( `pid` = 0 ) AND ( `token` = '6a2b0371d47014ad' ) AND ( `type` = 0 )  [ RunTime:0.000323s ]
+

@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>昆山正元名饮酒业</title>
+    
+<meta charset="UTF-8">
+
+<meta name="viewport" content=" initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<link href="__STATIC__/css/test/style.css" rel="stylesheet"/>
+<link href="__STATIC__/css/test/templates.css" rel="stylesheet"/>
+
+<!--栏目列表-->
+ <volist name="list" id="vo" >
+
+                        <div class="item_show_type2 content">
+                            <div>
+                                <!-- 楼层大图 -->
+								<if condition="fmod($key,2) eq '1'">
+                                <a href="/list/4260.html" class="item_img right">
+                                    <img src="/wxshop/data/upload/item_cate/{$vo.img}">
+                                </a>
+                                <div class="tab_content content_left">
+								                <!-- 楼层促销 -->
+                                    <a href="/list/4260.html" class="tab_banner">
+                                        <span>{$vo.name}|{$token}</span>
+                                        <div class="arrow_right1"></div>
+                                    </a>
+                                    <!-- 关键词 -->
+                                    <div class="tab_container">
+									<volist name="vo['voo']" id="sub">
+                                        
+                                                <a href="/list/3320.html" class="tab">{$sub.name}</a>
+                                    	</volist>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+								<else/>
+								  <a href="/list/4260.html" class="item_img left">
+                                    <img src="/wxshop/data/upload/item_cate/{$vo.img}">
+                                </a>
+                                <div class="tab_content content_right">
+								                <!-- 楼层促销 -->
+                                    <a href="/list/4260.html" class="tab_banner">
+                                        <span>{$vo.name}|{$token}</span>
+                                        <div class="arrow_right1"></div>
+                                    </a>
+                                    <!-- 关键词 -->
+                                    <div class="tab_container">
+									<volist name="vo['voo']" id="sub" >
+                                        
+                                                <a href="/list/3320.html" class="tab">{$sub.name}</a>
+                                    	</volist>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+								</if>
+                    
+	</volist> 
+</body>
+</html>

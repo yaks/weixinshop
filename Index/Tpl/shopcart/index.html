@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://store.weiapps.cn/index.php -->
+<html>
+    <include file="public:headtop" />
+
+
+<script type="text/javascript" src="__STATIC__/weixin/js/cart.js" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/css/item/item.css" />
+	    <!--组件依赖css begin-->
+    <link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/button/button.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/widget/button/button.default.css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/GMU/assets/icons.default.css" />
+    <!--组件依赖css end-->
+	    <!--组件依赖js begin-->
+
+    <script type="text/javascript" src="__STATIC__/GMU/src/extend/highlight.js"></script>
+    <script type="text/javascript" src="__STATIC__/GMU/src/widget/button/button.js"></script>
+    <!--组件依赖js end-->
+
+    <head>
+    </head>
+    
+    <body id="touch">
+        <include file="public:head" />
+<div id="content">
+<?php if(count($_SESSION['cart'])==0){ ?>
+    <div class="null_shopping">
+          <div class="cart_pic"></div>
+          <h4>您还没有宝贝，赶快去逛逛吧！</h4>
+          <p>
+              <a class="enter" href="{:U('index/index')}">马上去逛逛</a>
+          </p>
+      </div>  
+   <?php }else{  ?>   
+   <h3 id="chose_all"><b class="ico">全选商品</b></h3>
+    <ul class="cart_list">
+    
+     <volist name='item' id='vo'>
+         <li id="cart_item_{$vo.id}">
+              <p class="goods_info">
+                  <span class="img"><a href="{:U('item/index',array('id'=>$vo['id']))}" ><img src="{:attach(get_thumb($vo['img'], '_m'), $_SESSION['user_token'].'/item')}" height="80" width="80"></a></span>
+                  <span class="tit">
+                      <a href="{:U('item/index',array('id'=>$vo['id']))}" >{$vo.name} {$vo.spec_1} {$vo.spec_2}</a><br>
+                      <span>价格:</span><span class="price1">￥{$vo.price}</span><br>
+                      <span>数量:</span>
+					  <input type ="hidden" id="spec_id_{$vo.id}" value ="{$vo.spec_id}"></input>
+			
+                      <span >
+					  
+					  <a class="button" data-icon="minus" onClick="decrease_quantity({$vo.id},{$vo.spec_id});"></a>
+                         
+                           <input id="input_item_{$vo.id}{$vo.spec_id}" value="{$vo.num}" orig="1" changed="{$vo.num}" onKeyUp="change_quantity({$vo.id},{$vo.spec_id}, this);" class="button" style="height: 31px;bottom: 5px;">
+                        
+                      <a class="button" data-icon="plus" onClick="add_quantity({$vo.id},{$vo.spec_id});"></a>(库存:{$vo.goods_stock})
+					  </span>
+                      <span>
+                          <a class="del" href="javascript:;" onClick="drop_cart_item({$vo.id},{$vo.spec_id});"> <img src="__STATIC__/weixin/images/del.png"  style="vertical-align: middle;height:20px;width=:20px"></a>
+                      </span>
+                  </span>
+              </p>
+              <p class="buy_info">
+                  <span class="total">
+                      <span>小计:</span>
+                      <span class="price2" id="item{$vo.id}{$vo.spec_id}_subtotal">￥<?php echo sprintf("%01.2f",$vo['num']*$vo['price']); ?></span>
+                  </span>
+              </p>                        
+          </li>
+          </volist>
+    </ul>
+   
+    <div class="buy_foot">
+        <p class="goods_amount">
+            <span>商品总价:</span>
+            <strong class="fontsize1" id="cart_amount">￥{$sumPrice}</strong>
+        </p>
+        <p class="jiesuan_btn">
+            <a href="{:U('order/jiesuan')}" class="btn"><span>去结算</span><img src="__STATIC__/weixin/images/jiesuan.png" width="50%"></a>
+        </p>
+    </div>
+    <?php } ?>
+  
+
+    <div class="sku_tip" id="skuNotice" style="display:none">
+	    <span id="skuTitle2"></span>
+	</div>
+  
+        <include file="public:footer" />
+    </body>
+<script>
+    $('.button').button();
+</script>
+</html>

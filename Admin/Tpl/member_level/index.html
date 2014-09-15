@@ -1,0 +1,55 @@
+<include file="public:header" />
+<div class="subnav">
+    <h1 class="title_2 line_x">会员功能设置</h1>
+</div>
+<form id="info_form" action="{:u('member_level/index')}" method="post" enctype="multipart/form-data">
+<div class="pad_lr_10">
+	<div class="col_tab">
+		
+		<div class="J_panes">
+        <div class="content_list pad_10">
+		<table width="100%" cellpadding="2" cellspacing="1" class="table_form">
+			<input type="hidden" name="id" value="{$member_level['id']}" >
+	<tr >
+			<th >启用会员等级 :</th>
+            <td>
+                <label><input type="radio" name="level_flag" value="0" <if condition="$member_level['level_flag'] eq 0">checked</if>> 未启用</label>&nbsp;&nbsp;
+                <label><input type="radio" name="level_flag" value="1" <if condition="$member_level['level_flag'] eq 1">checked</if>> 启用</label>
+            </td>
+		 <tr>
+				<th>积分规则 :</th>
+				<td><input type="text" name="rate" id="rate" 
+class="input-text" size="5" value="{$member_level['rate']}">  元积一分</td>
+			</tr>
+			
+		
+
+		</table>
+		</div>
+        
+        </div>
+		<div class="mt10"><input type="submit" value="{:L('submit')}" class="btn btn_submit"></div>
+	</div>
+</div>
+<input type="hidden" name="menuid"  value="{$menuid}"/>
+</form>
+<include file="public:footer" />
+</body>
+</html>
+<script>
+$(function(){
+	$.formValidator.initConfig({formid:"info_form",autotip:true});
+	$("#rate").formValidator({onshow:'积分规则',onfocus:'积分规则'}).regexValidator({regexp:"intege1", datatype:"enum", onerror: "整数格式不正确"}).defaultPassed();
+	
+	$('#info_form').ajaxForm({success:complate,dataType:'json'});
+	function complate(result){
+		if(result.status == 1){
+			//$.dialog.get(result.dialog).close();
+            $.pinphp.tip({content:result.msg});
+            //window.location.reload();
+		} else {
+			$.pinphp.tip({content:result.msg, icon:'alert'});
+		}
+	}
+});
+</script>

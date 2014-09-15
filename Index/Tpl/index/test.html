@@ -1,0 +1,403 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>iScroll demo: simple</title>
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script charset="utf-8" src="__STATIC__/weixin/js/iscroll.js" type="text/javascript"></script>
+<style type="text/css" media="all">
+
+/**
+ *
+ * Pull down styles
+ *
+ */
+#pullDown, #pullUp {
+	background:#fff;
+	height:40px;
+	line-height:40px;
+	padding:5px 10px;
+	border-bottom:1px solid #ccc;
+	font-weight:bold;
+	font-size:14px;
+	color:#888;
+}
+#pullDown .pullDownIcon, #pullUp .pullUpIcon  {
+	display:block; float:left;
+	width:40px; height:40px;
+	background:url(__STATIC__/weixin/images/pull-icon@2x.png) 0 0 no-repeat;
+	-webkit-background-size:40px 80px; background-size:40px 80px;
+	-webkit-transition-property:-webkit-transform;
+	-webkit-transition-duration:250ms;	
+}
+#pullDown .pullDownIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+#pullUp .pullUpIcon  {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullDown.flip .pullDownIcon {
+	-webkit-transform:rotate(-180deg) translateZ(0);
+}
+
+#pullUp.flip .pullUpIcon {
+	-webkit-transform:rotate(0deg) translateZ(0);
+}
+
+#pullDown.loading .pullDownIcon, #pullUp.loading .pullUpIcon {
+	background-position:0 100%;
+	-webkit-transform:rotate(0deg) translateZ(0);
+	-webkit-transition-duration:0ms;
+
+	-webkit-animation-name:loading;
+	-webkit-animation-duration:2s;
+	-webkit-animation-iteration-count:infinite;
+	-webkit-animation-timing-function:linear;
+}
+
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
+}
+
+#price_css {
+color:#F00;
+display: inline-block;
+text-shadow: none;
+position: absolute;
+bottom: 5px;
+margin-bottom: 0;
+font-weight: bold;
+margin-right: 5px;
+}
+
+#price_css1 {
+float: right;
+text-decoration: line-through;
+font-weight: normal;
+font-style: normal;
+margin-right: 5px;
+}
+</style>
+</head>
+<body>
+
+
+
+
+<script type="text/javascript">
+
+var myScroll,
+	pullDownEl, pullDownOffset,
+	pullUpEl, pullUpOffset,
+	generatedCount = 1;
+	ajaxget="{$AjaxGetStr}";
+	ajaxoraby="&order=id desc";
+	priceflag = true;
+	product_items="{$product_items}";
+	
+//显示加载器
+function showLoader() {
+    //显示加载器.for jQuery Mobile 1.2.0
+    $.mobile.loading('show', {
+        text: '正在努力加载中...', //加载器中显示的文字
+        textVisible: true, //是否显示文字
+        theme: 'a',        //加载器主题样式a-e
+        textonly: false,   //是否只显示文字
+        html: ""           //要显示的html内容，如图片等
+    });
+}
+
+//隐藏加载器.for jQuery Mobile 1.2.0
+function hideLoader()
+{
+    //隐藏加载器
+    $.mobile.loading('hide');
+}
+
+
+function pullDownAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+		if (generatedCount >1)
+		{
+		generatedCount =generatedCount-1
+		GetItemInfo(generatedCount)
+		}
+		
+		myScroll.refresh();		// Remember to refresh when contents are loaded (ie: on ajax completion)
+	}, 500);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+function pullUpAction () {
+	setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+			if (generatedCount <{$Page})
+		{
+			generatedCount =generatedCount+1
+		  GetItemInfo(generatedCount)
+		  }
+		
+		myScroll.refresh();		// Remember to refresh when contents are loaded (ie: on ajax completion)
+	}, 500);	// <-- Simulate network congestion, remove setTimeout from production!
+}
+
+function loaded() {
+	pullDownEl = document.getElementById('pullDown');
+	pullDownOffset = pullDownEl.offsetHeight;
+	pullUpEl = document.getElementById('pullUp');	
+	pullUpOffset = pullUpEl.offsetHeight;
+	
+	myScroll = new iScroll('wrapper', {
+		useTransition: true,
+		topOffset: pullDownOffset,
+		onRefresh: function () {
+			if (pullDownEl.className.match('loading')) {
+				pullDownEl.className = '';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+			} else if (pullUpEl.className.match('loading')) {
+				pullUpEl.className = '';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+			}
+		},
+		onScrollMove: function () {
+			if (this.y > 5 && !pullDownEl.className.match('flip')) {
+				pullDownEl.className = 'flip';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Release to refresh...';
+				this.minScrollY = 0;
+			} else if (this.y < 5 && pullDownEl.className.match('flip')) {
+				pullDownEl.className = '';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Pull down to refresh...';
+				this.minScrollY = -pullDownOffset;
+			} else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'flip';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Release to refresh...';
+				this.maxScrollY = this.maxScrollY;
+			} else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+				pullUpEl.className = '';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Pull up to load more...';
+				this.maxScrollY = pullUpOffset;
+			}
+		},
+		onScrollEnd: function () {
+			if (pullDownEl.className.match('flip')) {
+				pullDownEl.className = 'loading';
+				pullDownEl.querySelector('.pullDownLabel').innerHTML = 'Loading...';				
+				pullDownAction();	// Execute custom function (ajax call?)
+			} else if (pullUpEl.className.match('flip')) {
+				pullUpEl.className = 'loading';
+				pullUpEl.querySelector('.pullUpLabel').innerHTML = 'Loading...';				
+				pullUpAction();	// Execute custom function (ajax call?)
+			}
+		}
+	});
+	
+	setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+}
+
+document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+document.addEventListener('DOMContentLoaded', function () { setTimeout(loaded, 200); }, false);
+
+function GetItemInfo(a)
+{
+	showLoader();
+	$(".show-page-loading-msg").show();
+	var objListView = document.getElementById("emrListView");
+	objListView.innerHTML = "";  
+	var txt0="<li data-role=\"list-divider\">"+product_items+"<span class=\"ui-li-count\">"+a+"</span></li>";
+	$("#emrListView").append(txt0);
+	$('#emrListView').listview('refresh');
+	$.get("index.php?m=index&a=ajaxtest&"+ajaxget+ajaxoraby+"&p="+a,function(json,status)
+	{
+		
+		if (json.status ==0)
+		{
+			for (i=0 ;i<json.data.length;i++)
+			{
+				var imgpath ="{:attach(get_thumb(), 'item')}"+json.data[i].img.split(".")[0]+'_b.'+json.data[i].img.split(".")[1];
+				var txt = "<li><a href=\"#\"><img src=\""+imgpath+"\"><h2>";
+				var txt1="</h2><p id =\"price_css1\">参考价：￥"+json.data[i].price+"</p><p id=\"price_css\">会员价：￥"+json.data[i].price+"</p></a><a href=\"#\">Some Text</a></li>";
+				var txt2=txt+json.data[i].title+txt1
+				$("#emrListView").append(txt2);
+				$('#price_css').addClass("price");
+				$('#emrListView').listview('refresh');
+			}
+		}	
+		hideLoader();
+		
+
+		});	
+	ajaxoraby =	"&order=id desc";
+
+				  
+}
+
+$(document).ready(function()
+{
+	GetItemInfo(1);
+	$(".cate").click(function()
+	{
+		var cateid =$(this).attr("cateid");
+		var catename =$(this).attr("catename");
+		product_items=catename;
+		ajaxget="cateid="+cateid;
+		generatedCount=1;
+		GetItemInfo(generatedCount);
+	});
+  
+   $(".newgoods").click(function()
+   {
+	   ajaxget="news=1"
+	   product_items="新品上市";
+	   generatedCount=1;
+	   GetItemInfo(generatedCount);	
+	});
+	
+   $(".commends").click(function()
+   {
+		ajaxget="tuijian=1"
+		product_items="推荐商品";
+		generatedCount=1;
+		GetItemInfo(generatedCount);	
+  });
+  
+  $(".scortprice").click(function()
+  {
+	  if (priceflag)
+	  {
+		ajaxoraby="&order=price desc";
+		priceflag = false;
+		generatedCount=1;
+		GetItemInfo(generatedCount);
+	
+		$("#scort-1").attr("data-icon", "arrow-d")
+					.find(".ui-icon")
+					.addClass("ui-icon-" + "arrow-d")
+					.removeClass("ui-icon-" + "arrow-u");
+		}else
+		{
+			ajaxoraby="&order=price asc";
+			priceflag = true;
+			generatedCount=1;
+			GetItemInfo(generatedCount);
+	
+			$("#scort-1").attr("data-icon", "arrow-u")
+                 		.find(".ui-icon")
+                     	.addClass("ui-icon-" + "arrow-u")
+                     	.removeClass("ui-icon-" + "arrow-d");
+		}
+	});
+
+  $(".scortbuynum").click(function()
+  {
+		ajaxoraby="&order=buy_num asc";
+		priceflag = false;
+		generatedCount=1;
+		GetItemInfo(generatedCount);
+	});
+
+  $(".scortcomnum").click(function()
+  {
+		ajaxoraby="&order=comments asc";
+		priceflag = false;
+		generatedCount=1;
+		GetItemInfo(generatedCount);
+	});
+	
+  $(".scortaddtime").click(function()
+  {
+		ajaxoraby="&order=add_time asc";
+		priceflag = false;
+		generatedCount=1;
+		GetItemInfo(generatedCount);
+	});
+
+	$(".search").click(function()
+	{
+		ajaxget="search="+$("#search-1").val(); 
+		generatedCount=1;
+		product_items="搜索结果：";
+		GetItemInfo(generatedCount);
+	});
+
+});
+</script>
+
+<div data-role="page" id="pageone">
+	<div data-role="panel" id="mypanel"  data-display="overlay" data-theme="a">
+		<ul style="min-width: 210px;" data-role="listview" data-inset="true">            
+			<li data-role="divider"  data-theme="b">商品分类</li> 
+ 			<li><a  class ='newgoods' cateid ="0" data-ajax="false">最新商品</a></li>
+			<li><a  class ='commends' cateid ="0" data-ajax="false">店长推荐</a></li>          
+			<volist name='index_cate_list' id='vo' >
+        	 	<li><a  class ='cate' cateid ={$vo.id} data-ajax="false" catename={$vo.name} > {$vo.name}</a></li>
+			</volist>     
+ 		</ul> 
+ 
+ 		<div class="ui-corner-all" id="phonebook" data-theme="b" >
+    		<form>
+ 				<label for="search-1">Search:</label>
+     			<input name="search-1" id="search-1" type="search" value="">
+            	<button class = 'search' type="button" data-icon="check" data-ajax="false" data-rel="close" >搜索</button>
+    		</form>
+		</div>
+ 
+ 		<div class="ui-corner-all" id="phonebook"  >
+ 			<a href="#header" data-role="button" data-rel="close" data-icon="delete" data-theme="b" >Close</a>
+ 		</div>
+
+	</div><!-- /panel -->
+    
+	<div data-role="header" data-theme="a" id="header">
+		<nav data-role="navbar">
+			<ul>
+      			<li><a href="#mypanel" data-rel="popup" data-icon="bars"></a></li>
+      			<li><a href="#email" data-rel="dialog" data-icon="gear"></a></li>
+	   			<li><a href="#mypanel" data-rel="dialog" data-icon="home"></a></li>
+      			<li><a href="#calendar" data-rel="dialog" data-icon="star"></a></li>
+    		</ul>
+	  	</nav>
+	</div>
+
+	<div data-role="content" id="pageone"> 
+
+		<div id ="scortdiv" data-role="navbar" data-iconpos="left">
+    		<ul>
+        		<li><a id ='scort-1' class ="scortprice"  data-icon="arrow-u" href="#" >价格</a></li>
+        		<li><a id ='scort-2' class ="scortbuynum" data-icon="arrow-u"href="#">销量</a></li>
+        		<li><a id ='scort-3' class ="scortcomnum" data-icon="arrow-u"href="#">人气</a></li>
+				<li><a id ='scort-4' class ="scortaddtime" data-icon="arrow-u"href="#">上架时间</a></li>
+    		</ul>
+		</div>
+
+		<div id="wrapper">
+			<div id="scroller">
+				<div id="pullDown">
+					<span class="pullDownIcon"></span><span class="pullDownLabel">Pull down to refresh...</span>
+				</div>
+
+    			<ul  id ='emrListView' data-role="listview" data-inset="true"></ul>
+
+				<div id="pullUp">
+					<span class="pullUpIcon"></span><span class="pullUpLabel">Pull up to refresh...</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-role="footer" data-position ='fixed'>
+    	<div data-role="navbar">
+      		<ul>
+              <li><a href="#" >商城首页</a></li>
+              <li><a href="#" >会员中心</a></li>
+              <li><a href="#" >品牌介绍</a></li>
+      		</ul>
+    	</div>
+	</div>
+</div>
+</body>
+</html>

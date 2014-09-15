@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'id', 1 => 'token', 2 => 'bank_name', 3 => 'bank_num', 4 => 'bank_user', 5 => 'bank_desc', '_autoinc' => true, '_pk' => 'id', '_type' => array ( 'id' => 'int(11)', 'token' => 'varchar(100)', 'bank_name' => 'varchar(255)', 'bank_num' => 'varchar(255)', 'bank_user' => 'varchar(50)', 'bank_desc' => 'varchar(255)', ), );?>

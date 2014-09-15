@@ -1,0 +1,118 @@
+﻿
+	</div>
+	</div>
+	<div class="panel" id="panel_content"></div>
+<script id="list_cate" type="text/html">
+	<ul class="mod_list category" id="allcontent">
+		<%each data as value i%>
+			<li keywordid="<%value.id%>" class="">
+             <%if value.sub_cate!==null%>
+				<div class="list_inner level1">
+                <p class="cat_desc"><%value.name%></p>
+				</div>
+			<%else%>
+				<a href="./index.php?m=book&a=cate&cateid=<%value.id%>">
+					<div class="list_inner level">
+					<p class="cat_desc"><%value.name%></p>
+					</div>
+				</a>
+			<%/if%>
+            <ul class="mod_list sub_category" style="opacity: 1;">
+				<%each value.sub_cate as sub i%>
+				 <li>
+					<a href="./index.php?m=book&a=cate&cateid=<%sub.id%>">
+						<div class="list_inner">
+							<div class="big" url=""><%sub.name%></div>
+						</div>
+					</a>
+				</li>	 
+				<%/each%>
+			</ul>
+			</li>
+		 
+    <%/each%>
+	</ul>
+</script>
+
+<script>
+$(function ($) {
+	function showMenu2($curMenuDom, keywordid) {
+	var next = $curMenuDom;
+        if (next.css("display") == "none") {
+            next.css("opacity", "0").show().animate({
+                opacity: 1
+            },
+            500);
+            var visibleHeight = $(window).height() + $(window).scrollTop(),
+            objHeight = next.offset().top + next.height();
+            if (objHeight > visibleHeight) {}
+        } else {
+            next.hide();
+        }
+    }
+		      
+	$.get('./index.php?m=book&a=get_cate_ajax', function (data) {
+       
+	   (function (data) {				
+						template.config('openTag','<%');
+						template.config('closeTag','%>');
+						cate_data=data
+						var html = template('list_cate', data);
+						document.getElementById('panel_content').innerHTML = html;
+
+        $('.level1').on('tap',
+        function(e) {
+            e.preventDefault();
+            if ($(this).hasClass('level1')) {
+                showMenu2($(this).next(), $(this).parent().attr("keywordid"));
+                $(this).parent().toggleClass('opened');
+            }
+        });
+		
+        $(".sub_category li").on('tap',
+        function(_event) {
+            var target = $(_event.target || _event.srcElement),
+            _tar = target.find('[class="big"]');
+            go(target.find('[class="big"]').attr('url'));
+        });
+
+         })(data);
+    });			
+  });
+</script>
+
+<script type="text/javascript">		
+    $(function ($) {
+        $('.panel').panel({
+            contentWrap: $('.push'),
+			scrollMode:'follow',
+			dismissible:false	
+        });
+
+        $('#n_0').on('tap', function () {
+            $('.panel').panel('toggle', 'push', 'left');
+        });
+		  
+		touch.on('#touch', 'swipeleft', function(ev){
+            $('.panel').panel('close');
+        });	  
+    }(Zepto));
+		
+
+	window.onload=function(){
+	$('#load').removeClass('ui-loading');
+	var maxh =document.body.scrollHeight
+	$('.com-content').css('min_height', document.body.scrollHeight);
+	var footer_top=maxh-document.getElementById("content").offsetHeight-48-65;
+	$('#footer').css('top', footer_top);
+	
+	}		
+</script>
+
+	<div id="footer" >
+		<p class="foot_nav">
+			<a href="{:U('index/index')}">商城首页</a> | <a href="{:U('user/index')}">会员中心</a> | <a href="{:U('index/comp_info')}">品牌介绍</a>
+		</p>
+		<p class="foot_nav1">{$user_site['set_company']}</p>
+		<p class="foot_nav1">All Rights Reserved.</p>
+	</div>

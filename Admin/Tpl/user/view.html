@@ -1,0 +1,88 @@
+﻿<!--编辑会员-->
+<div class="dialog_content">
+	<table width="100%" class="table_form">
+		<tr>
+			<th width="100">会员昵称 :</th>
+			<td>{$info.nickname}</td>
+		</tr>
+		<tr>
+			<th width="100">用户识别码 :</th>
+			<td>{$info.openid}</td>
+		</tr>
+		<tr>
+        	<th>性别 :</th>
+            <td>
+            	<label><input type="radio" name="sex" value="1" <if condition="$info.sex eq 1">checked</if>> 男</label>&nbsp;&nbsp;
+				<label><input type="radio" name="sex" value="0" <if condition="$info.sex eq 2">checked</if>> 女</label>
+            </td>
+        </tr>
+			<tr>
+        	<th>区域 :</th>
+            <td>
+            	{$info.country} - {$info.province} - {$info.city}
+            </td>
+        </tr>
+					<tr>
+        	<th>首次登陆时间 :</th>
+            <td>
+            	{$info.reg_time|date="Y-m-d H:i",###} 
+        </tr>
+					<tr>
+        	<th>最后登陆时间 :</th>
+            <td>
+            	{$info.last_time|date="Y-m-d H:i",###} 
+            </td>
+        </tr>
+					<tr>
+        	<th>最后登陆IP :</th>
+            <td>
+            	{$info.last_ip} 
+            </td>
+        </tr>
+	    <!--<tr>
+			<th>会员头像 :</th>
+			<td>
+            	<input type="text" name="img" id="J_img" class="input-text fl mr10" size="30" value="{$info.img}">
+            	<div id="J_upload_img" class="upload_btn"><span>{:L('upload')}</span></div>
+                <img src="{:avatar($info['id'], 32)}" />
+				<notempty name="info['img']"><span class="attachment_icon J_attachment_icon" file-type="image" file-rel="{:avatar($info['id'], 32)}"><img src="__ROOT__/statics/images/filetype/image_s.gif" /></span></notempty>
+            </td>
+		</tr>-->
+		<tr>
+			<th>用户姓名(默认为用户识别码) :</th>
+			<td>{$info.username}</td>
+		</tr>
+		<tr>
+			<th>用户积分:</th>
+			<td>{$info.score}</td>
+		</tr>      
+        <tr>
+			<th>电话 :</th>
+			<td>{$info.phone}</td>
+		</tr>
+		<tr>
+			<th>地址 :</th>
+			<td>
+			{$info.address}
+            </td>
+		</tr>
+		 <tr>
+			<th>备注 :</th>
+			<td>
+			{$info.remark}
+            </td>
+		</tr>
+
+        
+	    <tr>
+			<th>{:L('enabled')} :</th>
+			<td>
+				<label><input type="radio" name="status" value="1" <if condition="$info.status eq 1">checked</if>> {:L('yes')}</label>&nbsp;&nbsp;
+				<label><input type="radio" name="status" value="0" <if condition="$info.status eq 0">checked</if>> {:L('no')}</label>
+			</td>
+		</tr>
+	</table>
+
+</div>
+<script src="__STATIC__/js/fileuploader.js"></script>
+

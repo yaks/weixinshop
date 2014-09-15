@@ -1,0 +1,207 @@
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>iScroll demo: simple</title>
+<link href="__STATIC__/weixin/css/photoswipe.css" type="text/css" rel="stylesheet" />
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<script type="text/javascript" src="__STATIC__/weixin/js/klass.min.js""></script>
+<script type="text/javascript" src="__STATIC__/weixin/js/code.photoswipe.jquery-3.0.5.min.js"></script>
+<link href="__STATIC__/weixin/css/jqpagination.css" type="text/css" rel="stylesheet" />
+
+<style type="text/css" media="all">
+
+
+#price_css {
+color:#F00;
+display: inline-block;
+text-shadow: none;
+position: absolute;
+bottom: 5px;
+margin-bottom: 0;
+font-weight: bold;
+margin-right: 5px;
+}
+
+#price_css1 {
+float: right;
+text-decoration: line-through;
+font-weight: normal;
+font-style: normal;
+margin-right: 5px;
+}
+
+.product-image {
+border: 1px solid #999;
+max-width: 400px;
+width: 100%;
+padding:5px;
+}
+
+.product-detail form {
+background: rgba(255, 255, 255, 0.75);
+border-radius: 10px;
+border: 1px solid #999;
+margin: 10px auto;
+max-width: 400px;
+padding: 1% 3%;
+text-align: center;
+}
+
+.ui-content {
+padding: 0 3%;
+}
+
+#Quantity .ui-input-text{
+
+width:20px;
+ margin-left:35px;
+}
+
+#Quantity .ui-btn{
+
+width:30px;
+}
+#cart-form1 .ui-grid-a .ui-block-b .ui-btn-corner-all{
+margin-top: 27px;
+}
+#cart-form1 .ui-grid-a .ui-block-a{
+margin-top: 27px;
+}
+</style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+$(document).ready(function()
+{
+$("#Gallery a").photoSwipe();
+
+	$(".search").click(function()
+	{
+		location.href="index.php?m=index&a=test&search="+$("#search-1").val()+"&product_items=搜索结果";
+	});
+
+});
+</script>
+
+<div data-role="page" id="pageone">
+	<div data-role="panel" id="mypanel"  data-display="overlay" data-theme="a">
+		<ul style="min-width: 210px;" data-role="listview" data-inset="true">            
+			<li data-role="divider"  data-theme="b">商品分类</li> 
+ 			<li><a  href="{:U('index/test',array('news'=>1,'product_items'=>最新商品))}" class ='newgoods' cateid ="0" data-ajax="false">最新商品</a></li>
+			<li><a  href="{:U('index/test',array('tuijian'=>1,'product_items'=>店长推荐))}"class ='commends' cateid ="0" data-ajax="false">店长推荐</a></li>          
+			<volist name='index_cate_list' id='vo' >
+        	 	<li><a  href="{:U('index/test',array('cateid'=>$vo['id'],'product_items'=>$vo['name']))}"class ='cate' cateid ={$vo.id} data-ajax="false" catename={$vo.name} > {$vo.name}</a></li>
+			</volist>     
+ 		</ul> 
+ 
+ 		<div class="ui-corner-all" id="phonebook" data-theme="b" >
+    		<form>
+ 				<label for="search-1">Search:</label>
+     			<input name="search-1" id="search-1" type="search" value="">
+            	<button class = 'search' type="button" data-icon="check" data-ajax="false" data-rel="close" >搜索</button>
+    		</form>
+		</div>
+ 
+ 		<div class="ui-corner-all" id="phonebook"  >
+ 			<a href="#header" data-role="button" data-rel="close" data-icon="delete" data-theme="b" >Close</a>
+ 		</div>
+
+	</div><!-- /panel -->
+    
+	<div data-role="header" data-theme="a" id="header">
+		<nav data-role="navbar">
+			<ul>
+      			<li><a href="#mypanel" data-rel="popup" data-icon="bars"></a></li>
+      			<li><a href="#email" data-rel="dialog" data-icon="gear"></a></li>
+	   			<li><a href="#mypanel" data-rel="dialog" data-icon="home"></a></li>
+      			<li><a href="#calendar" data-rel="dialog" data-icon="star"></a></li>
+    		</ul>
+	  	</nav>
+	</div>
+
+	<div data-role="content" class ='ui-content' id="pageone"> 
+	<div class="product-detail">
+	
+<form id="cart-form1" class="cart-form" method="post" data-ajax="false" action="/basket/Add">
+    <input type="hidden" name="sku" value="GOWINEYGJPP-24">
+    <div class="ui-grid-a">
+        <div class="ui-block-a">
+            <img class="product-image" src="http://img.oo.com.au/prod/GOWINEYGJPP-24/1b.jpg" alt="Yellowglen `Jewel Pink` Piccolo NV (24 x 200mL), SE Australia.">
+        </div>
+        <div class="ui-block-b">
+            <input type="hidden" id="hfProdId" value="212398">
+            
+                <div>
+                        <p class="star star-45">4.6/5 stars</p>
+                    <b class="price">$40.00</b><br>
+                        <span class="price-old">
+                            <text>Was: </text>
+                            <del>$70.00</del></span>
+                        <br>
+                        <span class="price-rrp">
+                            <text>RRP: </text>$101.94</span>
+                        <br>
+                        <span class="price-save">
+                            <text>Save: </text>
+                            <b class="price-save">61%</b></span>
+                        <br>
+                    <span class="price-delivery">
+                            Delivery:
+$12.95                    </span>
+                </div>
+        </div>
+    </div>
+
+<div>
+
+		<span ectype="goods_stock" class="stock">购买数量:（库存{$item.goods_stock}件）</span>
+<div class="pagination" data-role="none">
+    <a href="#" class="previous" data-role="none" data-icon="plus">&lsaquo;</a>
+    <input type="text" " data-role="none" value ='1'/>
+    <a href="#" class="next" data-role="none">&rsaquo;</a>
+</div>
+式
+</div>
+
+        <p>Yellowglen `Jewel Pink` Piccolo NV (24 x 200mL), SE Australia.</p>
+    </form>
+	</div>
+	
+	
+		<div data-role="collapsible">
+			<h4>A</h4>
+			<ul data-role="listview">
+				<div id="Gallery" class="ui-collapsible-content" aria-hidden="false">
+					<volist name="img_list" id="img">
+						<div  ><a href="{:attach(get_thumb($img['url'], '_b'), 'item')}"><img  class = 'product-image' src="{:attach(get_thumb($img['url'], '_b'), 'item')}" alt="Image 001" /></a></div>
+					</volist>						
+				</div
+			</ul>
+		</div>
+	
+	
+	
+
+	
+	</div>
+	<div data-role="footer" data-position ='fixed'>
+    	<div data-role="navbar">
+      		<ul>
+              <li><a href="#" >商城首页</a></li>
+              <li><a href="#" >会员中心</a></li>
+              <li><a href="#" >品牌介绍</a></li>
+      		</ul>
+    	</div>
+	</div>
+</div>
+</body>
+</html>
